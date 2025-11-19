@@ -1,0 +1,89 @@
+import tkinter as tk
+from tkinter import messagebox, ttk
+from openpyxl import Workbook, load_workbook
+import os
+
+file_excel = "data_siswa.xlsx"
+
+if not os.path.exists(file_excel):
+    wb = Workbook()
+    ws = wb.active
+    ws.append(["Nama", "Kelas"])
+    wb.save(file_excel)
+
+def simpan_data():
+    nama = entry_nama.get()
+    kelas = entry_kelas.get()
+
+    if not nama or not kelas:
+        messagebox.showwarning("Peringatan", "Nama dan Kelas harus diisi!")
+        return
+
+    wb = load_workbook(file_excel)
+    ws = wb.active
+    ws.append([nama, kelas])
+    wb.save(file_excel)
+
+    messagebox.showinfo("Berhasil", "Data berhasil disimpan!")
+    entry_nama.delete(0, tk.END)
+    entry_kelas.delete(0, tk.END)
+
+def hapus_data(tree, window_data):
+    selected_item = tree.selection()
+    if not selected_item:
+        messagebox.showwarning("Peringatan", "Pilih data yang ingin dihapus!")
+        return
+
+    values = tree.item(selected_item)["values"]
+    nama_hapus, kelas_hapus = values
+
+    wb = load_workbook(file_excel)
+    ws = wb.active
+    rows = list(ws.iter_rows(values_only=True))
+
+    wb_new = Workbook()
+    ws_new = wb_new.active
+    ws_new.append(["Nama", "Kelas"])
+
+    for row in rows[1:]:
+        if row != (nama_hapus, kelas_hapus):
+            ws_new.append(row)
+
+    wb_new.save(file_excel)
+    messagebox.showinfo("Berhasil", "Data berhasil dihapus!")
+    window_data.destroy()
+    lihat_data()
+
+def lihat_data():
+    window_data = tk.Toplevel(root)
+    window_data.title("Data Siswa")
+
+    tree = ttk.Treeview(window_data, columns=("Nama", "Kelas"), show="headings")
+    tree.heading("Nama", text="Nama")
+    tree.heading("Kelas", text="Kelas")
+    tree.pack(fill=tk.BOTH, expand=True)
+
+    wb = load_workbook(file_excel)
+    ws = wb.active
+
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        tree.insert("", tk.END, values=row)
+
+    btn_hapus = tk.Button(window_data, text="Hapus Data", command=lambda: hapus_data(tree, window_data))
+    btn_hapus.pack(pady=5)
+
+root = tk.Tk()
+root.title("Form Data Siswa")
+
+tk.Label(root, text="Nama Siswa").grid(row=0, column=0, padx=10, pady=5)
+entry_nama = tk.Entry(root)
+entry_nama.grid(row=0, column=1, padx=10, pady=5)
+
+tk.Label(root, text="Kelas").grid(row=1, column=0, padx=10, pady=5)
+entry_kelas = tk.Entry(root)
+entry_kelas.grid(row=1, column=1, padx=10, pady=5)
+
+tk.Button(root, text="Simpan", command=simpan_data).grid(row=2, column=0, pady=10)
+tk.Button(root, text="Lihat Data", command=lihat_data).grid(row=2, column=1, pady=10)
+
+root.mainloop()
