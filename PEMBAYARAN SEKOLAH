@@ -1,0 +1,44 @@
+class PembayaranSPP:
+    def __init__(self, nama, kelas, bulan, jumlah_bayar):
+        self.nama = nama
+        self.kelas = kelas
+        self.bulan = bulan
+        self.jumlah_bayar = jumlah_bayar
+        self.total_spp = 165000
+
+        self.kurang_bayar = self.total_spp - self.jumlah_bayar
+
+        if self.kurang_bayar == 0:
+            self.status = "LUNAS"
+        elif self.kurang_bayar > 0:
+            self.status = "BELUM LUNAS"
+        else:
+            self.status = "LUNAS (KELEBIHAN BAYAR)"
+
+    def tampilkan_struk(self):
+        print("=" * 40)
+        print("PEMBAYARAN SPP SEKOLAH".center(40))
+        print("=" * 40)
+
+        print(f"{'NAMA':<12} : {self.nama.upper()}")
+        print(f"{'KELAS':<12} : {self.kelas.upper()}")
+        print(f"{'BULAN':<12} : {self.bulan.upper()}")
+        print(f"{'TOTAL SPP':<12} : RP {self.total_spp}")
+        print(f"{'BAYAR':<12} : RP {self.jumlah_bayar}")
+        print(f"{'STATUS':<12} : {self.status}")
+
+        if self.kurang_bayar > 0:
+            print(f"{'KURANG BAYAR':<12} : RP {self.kurang_bayar}")
+        elif self.kurang_bayar < 0:
+            print(f"{'KEMBALI':<12} : RP {abs(self.kurang_bayar)}")
+
+        print("=" * 40)
+
+
+nama = input("Masukkan Nama Siswa  : ")
+kelas = input("Masukkan Kelas       : ")
+bulan = input("Masukkan Bulan Bayar : ")
+jumlah_bayar = int(input("Masukkan Jumlah Bayar: "))
+
+spp = PembayaranSPP(nama, kelas, bulan, jumlah_bayar)
+spp.tampilkan_struk()
