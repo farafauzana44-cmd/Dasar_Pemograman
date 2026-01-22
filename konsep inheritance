@@ -1,0 +1,74 @@
+from abc import ABC, abstractmethod
+
+# Abstract Class (Blueprint)
+class Kendaraan(ABC):
+    def __init__(self, merk, tahun):
+        self.merk = merk
+        self.tahun = tahun
+        self._kecepatan = 0  # encapsulation (protected)
+
+    def info_kendaraan(self):
+        return f"{self.merk} ({self.tahun})"
+
+    def tambah_kecepatan(self, nilai):
+        self._kecepatan += nilai
+
+    def kurangi_kecepatan(self, nilai):
+        self._kecepatan = max(0, self._kecepatan - nilai)
+
+    def cek_kecepatan(self):
+        return f"Kecepatan saat ini: {self._kecepatan} km/jam"
+
+    @abstractmethod
+    def bahan_bakar(self):
+        pass
+
+
+# Subclass Mobil
+class Mobil(Kendaraan):
+    def __init__(self, merk, tahun, model, jumlah_pintu):
+        super().__init__(merk, tahun)
+        self.model = model
+        self.jumlah_pintu = jumlah_pintu
+
+    def bahan_bakar(self):
+        return "Bensin / Solar"
+
+    def info_mobil(self):
+        return (
+            f"{self.info_kendaraan()} - Model {self.model}, "
+            f"{self.jumlah_pintu} pintu"
+        )
+
+
+# Subclass Motor
+class Motor(Kendaraan):
+    def __init__(self, merk, tahun, tipe):
+        super().__init__(merk, tahun)
+        self.tipe = tipe
+
+    def bahan_bakar(self):
+        return "Bensin"
+
+    def info_motor(self):
+        return f"{self.info_kendaraan()} - Tipe {self.tipe}"
+
+
+# Polymorphism Action
+def cetak_info(kendaraan):
+    print(kendaraan.info_kendaraan())
+    print("Bahan bakar:", kendaraan.bahan_bakar())
+    print(kendaraan.cek_kecepatan())
+    print("-" * 30)
+
+
+# Membuat objek
+mobil = Mobil("Toyota", 2022, "Avanza", 4)
+motor = Motor("Yamaha", 2021, "Sport")
+
+mobil.tambah_kecepatan(60)
+motor.tambah_kecepatan(80)
+
+# Polymorphism berjalan
+cetak_info(mobil)
+cetak_info(motor)
