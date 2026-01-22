@@ -1,0 +1,37 @@
+# Superclass (Kelas Induk)
+class Karyawan:
+    def __init__(self, nama, gaji):
+        self.nama = nama
+        self.gaji = gaji
+
+    def info(self):
+        return f"NAMA: {self.nama}, GAJI: {self.gaji}"
+
+
+# Subclass (Kelas Anak) -> PEWARISAN
+class Manager(Karyawan):
+    def __init__(self, nama, gaji, departemen):
+        # Ambil atribut dari Karyawan
+        super().__init__(nama, gaji)
+        self.departemen = departemen
+
+    def info(self):
+        # OVERRIDE method (polymorphism dikit)
+        return f"NAMA: {self.nama}, GAJI: {self.gaji}, DEPARTEMEN: {self.departemen}"
+
+    def bonus(self):
+        return self.gaji * 0.2
+
+
+# ===== PROGRAM UTAMA =====
+print("INPUT DATA MANAGER")
+
+nama = input("Nama Manager: ").upper()
+gaji = int(input("Gaji: "))
+departemen = input("Departemen: ").upper()
+
+manager = Manager(nama, gaji, departemen)
+
+print("\nDATA MANAGER")
+print(manager.info())
+print("BONUS:", manager.bonus())
