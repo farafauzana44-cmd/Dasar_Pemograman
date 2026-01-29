@@ -1,0 +1,30 @@
+class Pembayaran:
+    def total(self, harga, *args):
+        """
+        Overloading-style:
+        - total(harga)
+        - total(harga, jumlah)
+        - total(harga, jumlah, diskon)
+        """
+
+        if len(args) == 0:
+            jumlah = 1
+            diskon = 0
+        elif len(args) == 1:
+            jumlah = args[0]
+            diskon = 0
+        elif len(args) == 2:
+            jumlah, diskon = args
+        else:
+            raise TypeError("Parameter terlalu banyak")
+
+        subtotal = harga * jumlah
+        potongan = subtotal * (diskon / 100)
+
+        return subtotal - potongan
+        
+p = Pembayaran()
+
+print(p.total(10000))
+print(p.total(10000, 3))
+print(p.total(10000, 3, 10))
