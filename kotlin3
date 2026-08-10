@@ -1,0 +1,17 @@
+fun main() {
+val nilai1 = 90
+val nilai2 = 67
+val nilai3 = 66
+val kkm = 81
+
+val rataRata = (nilai1 + nilai2 + nilai3) / 3
+
+if (rataRata >= 95) {
+    println("lulus dengan nilai terbaik")
+} else if (rataRata >= kkm) {
+    println("lulus")
+} else {
+	println("tidak lulus")
+}
+
+}
